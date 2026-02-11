@@ -7,7 +7,6 @@ import com.example.order.management.enums.OrderStatus;
 import com.example.order.management.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +23,6 @@ public class OrderService {
         order.setCustomerId(request.getCustomerId());
         order.setAmount(request.getAmount());
         order.setStatus(OrderStatus.CREATED);
-
         return mapToResponse(repository.save(order));
     }
 
