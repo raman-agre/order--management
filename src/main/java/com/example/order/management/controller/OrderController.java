@@ -39,4 +39,9 @@ public class OrderController {
     public OrderResponse cancelOrder(@PathVariable Long id){
         return service.cancelOrder(id);
     }
+
+    @GetMapping("/security")
+    public String testSecurity(){
+        return "This is security test method";
+    }
 }
