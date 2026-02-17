@@ -5,6 +5,7 @@ import com.example.order.management.dto.OrderResponse;
 import com.example.order.management.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('CREATE_ORDER')")
     public OrderResponse createOrder(@Valid @RequestBody OrderRequest request){
         return service.createOrder(request);
     }
@@ -36,11 +38,13 @@ public class OrderController {
     }
 
     @PutMapping("/{id}/cancel")
+    @PreAuthorize("hasRole('ADMIN') and hasRole('USER')")
     public OrderResponse cancelOrder(@PathVariable Long id){
         return service.cancelOrder(id);
     }
 
     @GetMapping("/security")
+    @PreAuthorize("hasRole('ADMIN')")
     public String testSecurity(){
         return "This is security test method";
     }
