@@ -3,6 +3,9 @@ package com.example.order.management.controller;
 import com.example.order.management.dto.OrderRequest;
 import com.example.order.management.dto.OrderResponse;
 import com.example.order.management.service.OrderService;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,9 +18,11 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService service;
+    private final Counter counter;
 
-    public OrderController(OrderService service){
+    public OrderController(OrderService service, MeterRegistry registry){
         this.service = service;
+        this.counter = registry.counter("orders.created");
     }
 
     @PostMapping
@@ -46,6 +51,7 @@ public class OrderController {
     @GetMapping("/security")
     @PreAuthorize("hasRole('ADMIN')")
     public String testSecurity(){
+        counter.increment();
         return "This is security test method";
     }
 }

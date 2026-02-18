@@ -22,8 +22,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(request -> request
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/orders/security").hasRole("ADMIN")
-
                         .requestMatchers(HttpMethod.GET, "/orders/*").hasAuthority("GET_ORDER")
                         .requestMatchers(HttpMethod.GET, "/orders").hasAuthority("CREATE_ORDER")
                         .requestMatchers(HttpMethod.POST, "/orders/**").hasAuthority("CREATE_ORDER")
